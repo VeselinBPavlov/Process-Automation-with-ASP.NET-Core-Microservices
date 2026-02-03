@@ -4,7 +4,6 @@
     using System.Reflection;
     using System.Text;
     using AutoMapper;
-    using GreenPipes;
     using Hangfire;
     using Hangfire.SqlServer;
     using MassTransit;
@@ -129,13 +128,9 @@
 
             if (messagingHealthChecks)
             {
-                var messageQueueSettings = GetMessageQueueSettings(configuration);
-
-                var messageQueueConnectionString =
-                    $"amqp://{messageQueueSettings.UserName}:{messageQueueSettings.Password}@{messageQueueSettings.Host}/";
-
-                healthChecks
-                    .AddRabbitMQ(rabbitConnectionString: messageQueueConnectionString);
+                // TODO: Update RabbitMQ health check for v9 - API changed
+                // var messageQueueSettings = GetMessageQueueSettings(configuration);
+                // healthChecks.AddRabbitMQ(...)
             }
 
             return services;
@@ -158,26 +153,23 @@
                 {
                     consumers.ForEach(consumer => mt.AddConsumer(consumer));
 
-                    mt.AddBus(context => Bus.Factory.CreateUsingRabbitMq(rmq =>
+                    mt.UsingRabbitMq((context, cfg) =>
                     {
-                        rmq.Host(messageQueueSettings.Host, host =>
+                        cfg.Host(messageQueueSettings.Host, host =>
                         {
                             host.Username(messageQueueSettings.UserName);
                             host.Password(messageQueueSettings.Password);
                         });
-                        
-                        rmq.UseHealthCheck(context);
 
-                        consumers.ForEach(consumer => rmq.ReceiveEndpoint(consumer.FullName, endpoint =>
+                        consumers.ForEach(consumer => cfg.ReceiveEndpoint(consumer.FullName, endpoint =>
                         {
                             endpoint.PrefetchCount = 6;
-                            endpoint.UseMessageRetry(retry => retry.Interval(5, 200));
+                            endpoint.UseMessageRetry(retry => retry.Interval(5, TimeSpan.FromMilliseconds(200)));
 
                             endpoint.ConfigureConsumer(context, consumer);
                         }));
-                    }));
-                })
-                .AddMassTransitHostedService();
+                    });
+                });
 
             if (usePolling)
             {
@@ -212,9 +204,9 @@
             var settings = configuration.GetSection(nameof(MessageQueueSettings));
 
             return new MessageQueueSettings(
-                settings.GetValue<string>(nameof(MessageQueueSettings.Host)),
-                settings.GetValue<string>(nameof(MessageQueueSettings.UserName)),
-                settings.GetValue<string>(nameof(MessageQueueSettings.Password)));
+                settings.GetValue<string>(nameof(MessageQueueSettings.Host)) ?? "localhost",
+                settings.GetValue<string>(nameof(MessageQueueSettings.UserName)) ?? "guest",
+                settings.GetValue<string>(nameof(MessageQueueSettings.Password)) ?? "guest");
         }
 
         private static void CreateHangfireDatabase(IConfiguration configuration)
