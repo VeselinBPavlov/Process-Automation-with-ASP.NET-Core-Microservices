@@ -37,7 +37,9 @@ services:
             - "5001:80"
         env_file: Server/CarRentalSystem/Common.env
         environment:
-            - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=CarRentalIdentityDatabase;User Id=sa; Password=yourStrongPassword12!@;MultipleActiveResultSets=true
+            - ASPNETCORE_URLS=http://+:80
+            - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=CarRentalIdentityDatabase;User Id=sa; Password=yourStrongPassword12!@;MultipleActiveResultSets=true;TrustServerCertificate=True
+            - IdentitySettings__Secret=S0M3 M4G1C UN1C0RNS G3N3R4T3D MY S3CR3T
             - IdentitySettings__AdminPassword=adminpass12!
         restart: on-failure
         volumes:
@@ -58,8 +60,9 @@ services:
         env_file: 
             - Server/CarRentalSystem/Common.env
         environment:
-            - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=CarRentalDealersDatabase;User Id=sa; Password=yourStrongPassword12!@;MultipleActiveResultSets=true
-            - ConnectionStrings__CronJobsConnection=Server=sqlserver;Database=CarRentalDealersCronJobsDatabase;User Id=sa; Password=yourStrongPassword12!@;MultipleActiveResultSets=true
+            - ASPNETCORE_URLS=http://+:80
+            - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=CarRentalDealersDatabase;User Id=sa; Password=yourStrongPassword12!@;MultipleActiveResultSets=true;TrustServerCertificate=True
+            - ConnectionStrings__CronJobsConnection=Server=sqlserver;Database=CarRentalDealersCronJobsDatabase;User Id=sa; Password=yourStrongPassword12!@;MultipleActiveResultSets=true;TrustServerCertificate=True
             - MessageQueueSettings__Host=rabbitmq
             - MessageQueueSettings__UserName=rabbitmquser
             - MessageQueueSettings__Password=rabbitmqPassword12!
@@ -83,8 +86,9 @@ services:
         env_file: 
             - Server/CarRentalSystem/Common.env
         environment:
-            - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=CarRentalStatisticsDatabase;User Id=sa; Password=yourStrongPassword12!@;MultipleActiveResultSets=true
-            - ConnectionStrings__CronJobsConnection=Server=sqlserver;Database=CarRentalStatisticsCronJobsDatabase;User Id=sa; Password=yourStrongPassword12!@;MultipleActiveResultSets=true
+            - ASPNETCORE_URLS=http://+:80
+            - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=CarRentalStatisticsDatabase;User Id=sa; Password=yourStrongPassword12!@;MultipleActiveResultSets=true;TrustServerCertificate=True
+            - ConnectionStrings__CronJobsConnection=Server=sqlserver;Database=CarRentalStatisticsCronJobsDatabase;User Id=sa; Password=yourStrongPassword12!@;MultipleActiveResultSets=true;TrustServerCertificate=True
             - MessageQueueSettings__Host=rabbitmq
             - MessageQueueSettings__UserName=rabbitmquser
             - MessageQueueSettings__Password=rabbitmqPassword12!
@@ -108,6 +112,7 @@ services:
         env_file: 
             - Server/CarRentalSystem/Common.env
         environment:
+            - ASPNETCORE_URLS=http://+:80
             - NotificationSettings__AllowedOrigins=http://localhost
             - MessageQueueSettings__Host=rabbitmq
             - MessageQueueSettings__UserName=rabbitmquser
@@ -147,6 +152,7 @@ services:
             - "5000:80"
         env_file: Server/CarRentalSystem/Common.env
         environment:
+            - ASPNETCORE_URLS=http://+:80
             - ServiceEndpoints__Identity=http://identity
             - ServiceEndpoints__Dealers=http://dealers
             - ServiceEndpoints__Statistics=http://statistics
@@ -169,6 +175,7 @@ services:
         ports: 
             - "5500:80"
         environment:
+            - ASPNETCORE_URLS=http://+:80
             - HealthChecks-UI__HealthChecks__0__Name=Identity
             - HealthChecks-UI__HealthChecks__0__Uri=http://identity/health
             - HealthChecks-UI__HealthChecks__1__Name=Dealers

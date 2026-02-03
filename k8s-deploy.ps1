@@ -1,13 +1,22 @@
 # PowerShell скрипт за deployment на Car Rental System в Kubernetes
 param(
     [ValidateSet('local', 'development', 'production')]
-    [string]$Environment = 'local'
+    [string]$Environment = 'local',
+    
+    [ValidateSet('kubectl', 'minikube')]
+    [string]$KubeCommand = 'kubectl'
 )
 
 Write-Host "🚀 Deploying Car Rental System to Kubernetes..." -ForegroundColor Green
 Write-Host "Environment: $Environment" -ForegroundColor Cyan
+Write-Host "Kubernetes: $KubeCommand" -ForegroundColor Cyan
 
-$kubectl = 'kubectl'
+# Определете kubectl командата
+if ($KubeCommand -eq 'minikube') {
+    $kubectl = 'minikube kubectl --'
+} else {
+    $kubectl = 'kubectl'
+}
 
 # Проверете дали Kubernetes работи
 Write-Host "`n✅ Checking Kubernetes cluster..." -ForegroundColor Yellow
