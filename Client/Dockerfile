@@ -1,5 +1,5 @@
 # base image
-FROM node:12.2.0 as build
+FROM node:20-alpine as build
 
 # set working directory
 WORKDIR /app
@@ -8,9 +8,9 @@ WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
 
 # install and cache app dependencies
-COPY package.json /app/package.json
-RUN npm install
-RUN npm install -g @angular/cli@10.1.2
+COPY package.json package-lock.json /app/
+RUN npm install --legacy-peer-deps
+RUN npm install -g @angular/cli@19.1.0
 
 # add app
 COPY . /app
@@ -18,10 +18,10 @@ COPY . /app
 # generate build
 ARG configuration=production
 
-RUN ng build --output-path=dist --configuration=$configuration
+RUN ng build --output-path=dist/browser --configuration=$configuration
 
 # base image
-FROM nginx:1.16.0-alpine
+FROM nginx:1.25-alpine
 
 # Remove default Nginx website
 RUN rm -rf /usr/share/nginx/html/*
@@ -30,7 +30,7 @@ RUN rm -rf /usr/share/nginx/html/*
 COPY ./nginx.conf /etc/nginx/nginx.conf
 
 # copy artifact build from the 'build environment'
-COPY --from=build /app/dist /usr/share/nginx/html
+COPY --from=build /app/dist/browser /usr/share/nginx/html
 
 # expose port 80
 EXPOSE 80
