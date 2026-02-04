@@ -1,6 +1,5 @@
 import { Component, OnInit, Output, EventEmitter, resolveForwardRef } from '@angular/core';
-import { Validators } from '@angular/forms';
-import { FormGroup, FormBuilder } from 'ngx-strongly-typed-forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AuthenticationService } from '../authentication.service';
 import { LoginFormModel } from './login.model';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -9,10 +8,11 @@ import { RouterExtService } from 'src/app/shared/rouer-ext.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.css'],
+  standalone: false
 })
 export class LoginComponent implements OnInit {
-  loginForm: FormGroup<LoginFormModel>;
+  loginForm!: FormGroup;
   returnUrl: string;
   @Output() emitter: EventEmitter<string> = new EventEmitter<string>();
 
@@ -24,7 +24,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     localStorage.removeItem('token');
-    this.loginForm = this.fb.group<LoginFormModel>({
+    this.loginForm = this.fb.group({
       email: ['', Validators.required],
       password: ['', Validators.required],
     })

@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Car } from '../cars.model';
-import { FormGroup, FormBuilder } from 'ngx-strongly-typed-forms';
-import { Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { CarsService } from '../cars.service';
 import { ToastrService } from 'ngx-toastr';
 import { Category } from '../category.model';
@@ -10,20 +9,21 @@ import { Category } from '../category.model';
 @Component({
   selector: 'app-edit',
   templateUrl: './edit.component.html',
-  styleUrls: ['./edit.component.css']
+  styleUrls: ['./edit.component.css'],
+  standalone: false
 })
 export class EditComponent implements OnInit {
-  id: string;
-  car: Car;
-  carForm: FormGroup<Car>;
-  categories: Array<Category>;
+  id!: string;
+  car!: Car;
+  carForm!: FormGroup;
+  categories!: Array<Category>;
   constructor(private route: ActivatedRoute, 
     private fb: FormBuilder, 
     private carService: CarsService, 
     private router: Router,
     public toastr: ToastrService) { 
     this.id = this.route.snapshot.paramMap.get('id');
-    this.carForm = this.fb.group<Car>({
+    this.carForm = this.fb.group({
       manufacturer: ['', Validators.required],
       model: ['', Validators.required],
       category: [0, Validators.required],
@@ -65,7 +65,7 @@ export class EditComponent implements OnInit {
   
   fetchCar() {
     this.carService.getCar(this.id).subscribe(car => {
-      this.carForm = this.fb.group<Car>({
+      this.carForm = this.fb.group({
         manufacturer: [car.manufacturer, Validators.required],
         model: [car.model, Validators.required],
         category: [car.category, Validators.required],

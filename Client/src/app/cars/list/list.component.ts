@@ -6,11 +6,12 @@ import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-list',
   templateUrl: './list.component.html',
-  styleUrls: ['./list.component.css']
+  styleUrls: ['./list.component.css'],
+  standalone: false
 })
 export class ListComponent implements OnInit {
   cars: Array<Car>;
-  id: string;
+  id!: string;
   category = null;
   constructor(private carsService: CarsService, private route: ActivatedRoute) { }
 

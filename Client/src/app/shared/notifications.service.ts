@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import * as signalR from "@aspnet/signalr";
+import * as signalR from "@microsoft/signalr";
 import { ToastrService } from 'ngx-toastr';
 import { environment } from 'src/environments/environment';
 
@@ -7,7 +7,7 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class NotificationsService {
-    private hubConnection: signalR.HubConnection;
+    private hubConnection!: signalR.HubConnection;
     
     constructor(private toastr: ToastrService) { }
 

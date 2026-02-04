@@ -1,27 +1,26 @@
-import { Component, OnInit, Output } from '@angular/core';
-import { FormGroup, FormBuilder } from 'ngx-strongly-typed-forms';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Search } from './search.model';
-import { Validators } from '@angular/forms';
 import { CarsService } from '../cars.service';
 import { Category } from '../category.model';
-import { EventEmitter } from '@angular/core';
 import { Car } from '../cars.model';
 import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
-  styleUrls: ['./search.component.css']
+  styleUrls: ['./search.component.css'],
+  standalone: false
 })
 export class SearchComponent implements OnInit {
-  searchForm: FormGroup<Search>
-  categories: Array<Category>;
+  searchForm!: FormGroup;
+  categories!: Array<Category>;
   category = null;
   @Output('emitter') emitter = new EventEmitter<Array<Car>>();
   constructor(private fb: FormBuilder, private carService: CarsService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.searchForm = this.fb.group<Search>({
+    this.searchForm = this.fb.group({
       manufacturer: ['', Validators.required],
       dealer: [''],
       category: [this.category, Validators.required],

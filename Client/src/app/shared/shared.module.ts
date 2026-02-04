@@ -2,8 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { NgxStronglyTypedFormsModule } from 'ngx-strongly-typed-forms';
-import { ModalModule } from 'angular-custom-modal';
 import { PopUpComponent } from './pop-up/pop-up.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { InterceptorService } from './interceptor.service';
@@ -23,8 +21,6 @@ import { PaginationComponent } from './pagination/pagination.component';
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    NgxStronglyTypedFormsModule,
-    ModalModule,
     ToastrModule.forRoot(),
     SharedRoutingModule,
   ],
@@ -41,7 +37,6 @@ import { PaginationComponent } from './pagination/pagination.component';
     },
     RouterExtService
   ],
-  exports: [ReactiveFormsModule,    FormsModule,
-    ModalModule, PopUpComponent, NavbarComponent, PaginationComponent]
+  exports: [ReactiveFormsModule, FormsModule, PopUpComponent, NavbarComponent, PaginationComponent]
 })
 export class SharedModule { }

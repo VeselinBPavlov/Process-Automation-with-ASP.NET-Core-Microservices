@@ -6,11 +6,12 @@ import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-view',
   templateUrl: './view.component.html',
-  styleUrls: ['./view.component.css']
+  styleUrls: ['./view.component.css'],
+  standalone: false
 })
 export class ViewComponent implements OnInit {
   car: Car;
-  id: string;
+  id!: string;
   constructor(private carService: CarsService, private route: ActivatedRoute) { 
     this.id = this.route.snapshot.paramMap.get('id');
   }

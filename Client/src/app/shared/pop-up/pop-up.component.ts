@@ -9,13 +9,14 @@ import { FormBuilder, FormGroup } from '@angular/forms';
   animations: [
     openCloseAnimation,
     openCloseShadeAnimation,
-  ]
+  ],
+  standalone: false
 })
 export class PopUpComponent implements OnInit {
   @Input() isOpen = false;
-  @Input() permissionsInput;
+  @Input() permissionsInput: any;
 
-  permissionsForm: FormGroup;
+  permissionsForm!: FormGroup;
   constructor() {
 
   }

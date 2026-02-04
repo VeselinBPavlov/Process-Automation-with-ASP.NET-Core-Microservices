@@ -5,12 +5,13 @@ import { CarsService } from '../cars.service';
 @Component({
   selector: 'app-dealer-cars',
   templateUrl: './dealer-cars.component.html',
-  styleUrls: ['./dealer-cars.component.css']
+  styleUrls: ['./dealer-cars.component.css'],
+  standalone: false
 })
 export class DealerCarsComponent implements OnInit {
   cars: Array<Car>;
   popUpOpen: boolean = false;
-  id: string;
+  id!: string;
   constructor(private carsService: CarsService) { }
 
   ngOnInit(): void {

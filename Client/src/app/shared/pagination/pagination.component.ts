@@ -5,7 +5,8 @@ import { Car } from 'src/app/cars/cars.model';
 @Component({
   selector: 'app-pagination',
   templateUrl: './pagination.component.html',
-  styleUrls: ['./pagination.component.css']
+  styleUrls: ['./pagination.component.css'],
+  standalone: false
 })
 export class PaginationComponent implements OnInit {
   @Input('queryString') queryString;

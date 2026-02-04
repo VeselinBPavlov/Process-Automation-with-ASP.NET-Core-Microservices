@@ -8,11 +8,12 @@ import { Statistics } from '../statistics/statistics.model';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  styleUrls: ['./home.component.css'],
+  standalone: false
 })
 export class HomeComponent implements OnInit {
-  categories: Array<Category>;
-  statistics: Statistics;
+  categories!: Array<Category>;
+  statistics!: Statistics;
 
   constructor(
     private carsService: CarsService, 

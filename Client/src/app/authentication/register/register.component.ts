@@ -1,21 +1,21 @@
 import { Component, OnInit, resolveForwardRef } from '@angular/core';
 import { RegisterModelForm } from './register.model';
-import { FormGroup, FormBuilder } from 'ngx-strongly-typed-forms';
-import { Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AuthenticationService } from '../authentication.service';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.css']
+  styleUrls: ['./register.component.css'],
+  standalone: false
 })
 export class RegisterComponent implements OnInit {
-  loginForm: FormGroup<RegisterModelForm>;
+  loginForm!: FormGroup;
   constructor(private fb: FormBuilder, private authenticationService: AuthenticationService, private router: Router) { }
 
   ngOnInit(): void {
-    this.loginForm = this.fb.group<RegisterModelForm>({
+    this.loginForm = this.fb.group({
       email: ['', Validators.required],
       password: ['', Validators.required],
       name: ['', Validators.required],

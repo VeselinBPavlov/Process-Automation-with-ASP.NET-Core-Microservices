@@ -1,7 +1,6 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Sort } from './sort.model';
-import { FormGroup, FormBuilder } from 'ngx-strongly-typed-forms';
-import { Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { CarsService } from '../cars.service';
 import { Car } from '../cars.model';
 import { Router } from '@angular/router';
@@ -9,16 +8,17 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-sort',
   templateUrl: './sort.component.html',
-  styleUrls: ['./sort.component.css']
+  styleUrls: ['./sort.component.css'],
+  standalone: false
 })
 export class SortComponent implements OnInit {
-  sortForm: FormGroup<Sort>;
+  sortForm!: FormGroup;
   @Output('emitter') emitter = new EventEmitter<Array<Car>>();
 
   constructor(private fb: FormBuilder, private carService: CarsService, private router: Router) { }
 
   ngOnInit(): void {
-    this.sortForm = this.fb.group<Sort>({
+    this.sortForm = this.fb.group({
       sortBy: ['', Validators.required],
       order: [''],
     })

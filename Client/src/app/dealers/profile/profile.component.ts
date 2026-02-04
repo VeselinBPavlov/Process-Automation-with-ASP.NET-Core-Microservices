@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder } from 'ngx-strongly-typed-forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Profile } from './profile.model';
-import { Validators } from '@angular/forms';
 import { ProfileService } from './profile.service';
 import { PasswordChange } from './password.model';
 import { Router } from '@angular/router';
@@ -9,26 +8,27 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.css']
+  styleUrls: ['./profile.component.css'],
+  standalone: false
 })
 export class ProfileComponent implements OnInit {
-  profileForm: FormGroup<Profile>;
-  user: Profile;
-  changePasswordForm: FormGroup<PasswordChange>
-  id: string;
+  profileForm!: FormGroup;
+  user!: Profile;
+  changePasswordForm: FormGroup;
+  id!: string;
   constructor(private fb: FormBuilder, private profileService: ProfileService, private router: Router) { 
-    this.changePasswordForm = this.fb.group<PasswordChange>({
+    this.changePasswordForm = this.fb.group({
       currentPassword: ['', Validators.required],
       newPassword: ['', Validators.required],
     })
   }
 
   ngOnInit(): void {
-    this.id = localStorage.getItem('dealerId');
+    this.id = localStorage.getItem('dealerId') || '';
     this.profileService.getDealer(this.id).subscribe(u => {
       this.user = u
       console.log(this.user.name)
-      this.profileForm = this.fb.group<Profile>({
+      this.profileForm = this.fb.group({
         name: [this.user.name, Validators.required],
         phoneNumber: [this.user.phoneNumber, Validators.required],
       })
